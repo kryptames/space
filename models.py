@@ -25,6 +25,7 @@ class Snake:
         self.length = 3
         self.wait_time = 0
         self.direction = DIR_RIGHT
+        self.has_eaten = False
  
     def update(self, delta):
         self.wait_time += delta
@@ -38,6 +39,14 @@ class Snake:
         self.wait_time = 0
         self.body.insert(0,(self.x, self.y))
         self.body.pop()
+        
+        if (self.has_eaten):
+            self.length += 1
+            self.body.append((self.body[-1][0]-DIR_OFFSET[self.direction][0]*Snake.BLOCK_SIZE,self.body[-1][1]-DIR_OFFSET[self.direction][1]*Snake.BLOCK_SIZE))
+            self.has_eaten = False
+        
+    def can_eat(self, heart):
+        return self.x == heart.x and self.y == heart.y
 
 class Heart:
     def __init__(self, world):
@@ -62,7 +71,10 @@ class World:
         self.heart.random_position()        
         
     def update(self, delta):
-            self.snake.update(delta)        
+        self.snake.update(delta)  
+        if self.snake.can_eat(self.heart):
+            self.heart.random_position()
+            self.snake.has_eaten = True        
 
     def on_key_press(self, key, key_modifiers):
         #self.direction = DIR_UP*(key==arcade.key.UP) + DIR_DOWN*(key==arcade.key.DOWN) + DIR_LEFT*(key==arcade.key.LEFT) + DIR_RIGHT*(key==arcade.key.RIGHT)
