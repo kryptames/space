@@ -13,6 +13,7 @@ class ModelSprite(arcade.Sprite):
     def sync_with_model(self):
         if self.model:
             self.set_position(self.model.x, self.model.y)
+            self.angle = self.model.angle
  
     def draw(self):
         self.sync_with_model()
@@ -34,6 +35,8 @@ class SpaceGameWindow(arcade.Window):
  
     def update(self, delta):
         self.world.update(delta)
+    def on_key_press(self, key, key_modifiers):
+        self.world.on_key_press(key, key_modifiers)    
         
  
  
