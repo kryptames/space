@@ -17,6 +17,11 @@ class Snake:
         self.world = world
         self.x = x
         self.y = y
+ 
+        self.body = [(x,y),
+                     (x-Snake.BLOCK_SIZE, y),
+                     (x-2*Snake.BLOCK_SIZE, y)]
+        self.length = 3
         self.wait_time = 0
         self.direction = DIR_RIGHT
  
@@ -30,8 +35,7 @@ class Snake:
         self.y += DIR_OFFSET[self.direction][1]*self.BLOCK_SIZE
         
         self.wait_time = 0
- 
- 
+
 class World:
     def __init__(self, width, height):
         self.width = width
